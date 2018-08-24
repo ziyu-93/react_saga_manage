@@ -1,0 +1,57 @@
+{
+  "name": "zkwz_datashow",
+  "version": "1.0.0",
+  "description": "zkwz_dataShow",
+  "main": "server.js",
+  "dependencies": {
+    "antd": "^3.8.0",
+    "babel-polyfill": "^6.26.0",
+    "classnames": "^2.2.6",
+    "minimist": "^1.2.0",
+    "open": "^0.0.5",
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2",
+    "react-redux": "^5.0.7",
+    "react-router-dom": "^4.3.1",
+    "react-router-redux": "^4.0.8",
+    "redux": "^4.0.0",
+    "redux-actions": "^2.6.1",
+    "redux-saga": "^0.16.0"
+  },
+  "devDependencies": {
+    "16bit": "^1.0.3",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-object-assign": "^6.22.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "css-loader": "^1.0.0",
+    "echarts": "^4.1.0",
+    "echarts-for-react": "^2.0.14",
+    "file-loader": "^1.1.11",
+    "less": "^3.8.0",
+    "less-loader": "^4.1.0",
+    "react-hot-loader": "^4.3.4",
+    "reselect": "^3.0.1",
+    "style-loader": "^0.21.0",
+    "uglifyjs-webpack-plugin": "^1.2.7",
+    "url-loader": "^1.0.1",
+    "webpack": "^4.16.5",
+    "webpack-cli": "^3.1.0",
+    "webpack-dev-server": "^3.1.5"
+  },
+  "scripts": {
+    "clean": "rimraf dist/*",
+    "start": "node server.js --env=deve --color --watch",
+    "dll": "webpack --env=dll --color",
+    "build": "webpack --env=prod"
+  },
+  "keywords": [
+    "zkwz"
+  ],
+  "author": "bzs",
+  "license": "ISC"
+}

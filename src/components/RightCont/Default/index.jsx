@@ -3,7 +3,7 @@ import classname from './index.less';
 import { DEFAULTQUERY_RESULT } from './../../../constants';
 import { getForm } from './../../../api/promise_ajax';
 import path from 'path';
-import { Spin } from 'antd';
+import { Spin, Drawer } from 'antd';
 
 export default class Default extends Component {
 
@@ -11,7 +11,12 @@ export default class Default extends Component {
         super(...arg);
         this.state = {
             updataList: [],
-            itemValue: null
+            itemValue: null,
+            itemCont: {
+                title: "",
+                content: ""
+            },
+            visible: false
         }
     }
 
@@ -22,7 +27,7 @@ export default class Default extends Component {
     componentDidMount() {
         const { dispatch } = this.props;
         const that = this;
-        getForm('http://172.16.48.154/sunland_data/default.json?12').then((res) => {
+        getForm('http://127.0.0.1/sunland_data/default.json?12').then((res) => {
             console.log(JSON.parse(res));
             setTimeout(() => {
                 that.setState({
@@ -33,7 +38,8 @@ export default class Default extends Component {
     }
 
     shouldComponentUpdate(prevProps, nextState) {
-        console.log(nextState);
+        // console.log(prevProps);
+        // console.log(nextState.updataList != this.state.updataList);
         if (nextState.updataList !== [] && nextState.updataList != this.state.updataList) {
             return true;
         } else if (nextState.itemValue !== null) {
@@ -42,16 +48,46 @@ export default class Default extends Component {
     }
 
     handleClick(e) {
+        const { updataList } = this.state;
+        const itemCont = updataList[e];
+        const self = this;
         this.setState({
-            itemValue: e
+            itemValue: e,
+            itemCont
+        }, () => {
+            self.onClick();
+        })
+    }
+
+    onClick = () => {
+        this.setState({
+            visible: true
+        })
+    }
+
+    onClose = () => {
+        this.setState({
+            visible: false
         })
     }
 
     render() {
-        const { updataList, itemValue } = this.state;
+        const { updataList, itemValue, itemCont, visible } = this.state;
         return (
             <div className={classname['content']}>
                 <h1 className={classname['title']}>自考王者版本更新时间轴</h1>
+                <Drawer
+                    title={itemCont.title}
+                    placement="right"
+                    closable={false}
+                    onClose={this.onClose}
+                    visible={visible}
+                >
+                    <div>
+                        <p style={{ color: 'red' }}>{itemCont.time}</p>
+                        {itemCont.content}
+                    </div>
+                </Drawer>
                 {
                     updataList.length > 0 ?
                         <div className={classname['main']}>

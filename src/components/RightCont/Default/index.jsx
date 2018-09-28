@@ -27,13 +27,17 @@ export default class Default extends Component {
     componentDidMount() {
         const { dispatch } = this.props;
         const that = this;
-        getForm('http://127.0.0.1/sunland_data/default.json?12').then((res) => {
-            console.log(JSON.parse(res));
-            setTimeout(() => {
-                that.setState({
-                    updataList: JSON.parse(res).data
-                })
-            }, 1000);
+        getForm('http://127.0.0.1/sunland_data/default.json?13').then((res) => {
+            let data = JSON.parse(res).data;
+            let arr = []
+            for (let i in data) {
+                arr = data[i].content.split('\n');
+                data[i].content = arr;
+            }
+            console.log(data);
+            that.setState({
+                updataList: data
+            })
         })
     }
 
@@ -85,7 +89,11 @@ export default class Default extends Component {
                 >
                     <div>
                         <p style={{ color: 'red' }}>{itemCont.time}</p>
-                        {itemCont.content}
+                        {
+                            itemCont.content ? itemCont.content.map((e, i) => {
+                                return <p key={i}>{e}</p>
+                            }) : ""
+                        }
                     </div>
                 </Drawer>
                 {

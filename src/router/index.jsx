@@ -7,6 +7,7 @@ import LeftMenu from "./../containers/LeftMenu";
 import RightCont from "./../containers/RightCont";
 import Default from "./../containers/Default";
 import TableData from "./../containers/TableData";
+import Dailydata from "./../containers/Daily_data";
 import ChartData from "./../containers/ChartData";
 import Login from './../containers/Login';
 import className from './../less/index.less';
@@ -18,8 +19,9 @@ const Cont = () => {
         <RightCont>
             <Switch>
                 <Route exact path="/zkwz_clientSystem" component={Default} />
-                <Route path="/zkwz_clientSystem/table" component={TableData} />
+                <Route path="/zkwz_clientSystem/userTable" component={TableData} />
                 <Route path="/zkwz_clientSystem/chart" component={ChartData} />
+                <Route path="/zkwz_clientSystem/daily_data" component={Dailydata} />
                 <Redirect from="*" to="/zkwz_clientSystem" component={Default} />
             </Switch>
             {/* <Route render={({ location }) => {

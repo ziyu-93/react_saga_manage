@@ -29,13 +29,6 @@ export default class TableData extends Component {
                 dataIndex: "nickname"
             },
             {
-                title: "性别",
-                dataIndex: "sex",
-                render: (text, record) => {
-                    return text == 1 ? "男" : text == 2 ? "女" : "未知"
-                }
-            },
-            {
                 title: "头像",
                 dataIndex: "avatar",
                 render: (text, record) => {
@@ -43,8 +36,33 @@ export default class TableData extends Component {
                 }
             },
             {
+                title: "性别",
+                dataIndex: "sex",
+                render: (text, record) => {
+                    return text == 1 ? "男" : text == 2 ? "女" : "未知"
+                }
+            },
+            {
+                title: "学历",
+                dataIndex: "qualifications_type",
+                render: (t, r) => {
+                    return t == 2 ? "本科" : t == 1 ? "专科" : "未知"
+                }
+            },
+            {
                 title: "电话号码",
                 dataIndex: "tel_no"
+            },
+            {
+                title: "是否尚德用户",
+                dataIndex: "buy_status",
+                render: (t, r) => {
+                    return t == 1 ? "是" : "否"
+                }
+            },
+            {
+                title: "渠道来源",
+                dataIndex: "channel"
             },
             {
                 title: "入库时间",
@@ -110,6 +128,7 @@ export default class TableData extends Component {
         console.log(this.props);
         const { defaultList } = this.props;
         let { userList, userNum, pageObj } = defaultList;
+        console.log(userList)
         const style = {
             position: 'absolute',
             right: '-20px',
@@ -120,7 +139,7 @@ export default class TableData extends Component {
         return (
             <div style={{ position: 'relative' }}>
                 {/* <Icon type="form" style={style} /> */}
-                <Table columns={this.columns} dataSource={userList} loading={userList && userList.length > 0 ? false : true} pagination={false} />
+                <Table columns={this.columns} dataSource={userList} loading={userList && userList.length > 0 ? false : true} pagination={false} scroll={{ x: '110%' }} />
                 {
                     userNum > 0 ? <Pagination total={userNum} current={pageObj.current} pageSize={pageObj.pageSize} onChange={this.onChange} style={{ marginBottom: '20px' }} /> : ""
                 }

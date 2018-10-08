@@ -12,7 +12,7 @@ export default class RightCont extends Component {
         const { leftMenuReducer } = rightCont;
         return (
             <section className={classname[leftMenuReducer ? 'rightContFull' : 'rightCont']}>
-                <div style={{ margin: '40px 60px', height: '100%', WebkitBoxSizing: 'border-box', boxSizing: 'border-box' }}>
+                <div style={{ margin: '40px 60px', WebkitBoxSizing: 'border-box', boxSizing: 'border-box' }}>
                     {
                         this.props.children
                     }

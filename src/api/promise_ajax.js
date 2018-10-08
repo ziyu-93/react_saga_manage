@@ -1,4 +1,3 @@
-
 /**
  * promise_ajax module
  * author: 16bit_bzs
@@ -91,7 +90,7 @@ const postForm = (URL, PARAMS) => {
     return promise_ajax(URL, PARAMS, 'POST', 'form');
 }
 
-const postObj = (URL, PARAMS) => {
+const postObj = (URL, PARAMS = {}) => {
     return promise_ajax(URL, PARAMS, 'POST', {});
 }
 

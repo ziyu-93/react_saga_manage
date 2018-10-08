@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import className from './index.less';
-import { Table, Pagination, Icon } from 'antd';
+import { Table, Pagination, Icon, Button } from 'antd';
 import { QUERYDAILYDATA } from './../../../api/interface';
 import { getForm, postObj } from './../../../api/promise_ajax';
 import { DEFAULT_DAILYDATA_QUERY_RESULT } from './../../../constants/index';
@@ -11,38 +11,18 @@ export default class Dailydata extends Component {
         super(...arg);
 
         this.state = {
-            userList: [{
-                currTime: '2018-09-26',
-                new_getIn: 552,
-                new_answer: 394,
-                new_info: 120,
-                new_phone: 279,
-                new_answerNum: 13858,
-                new_answerPer: 301,
-                new_sunlandPhone: 72,
-                new_sunlandInfo: 72,
-                new_sunlandAnswerPer: 65,
-                new_sunlandAnswerNum: 8484,
-                new_noSunlandPhone: 207,
-                new_noSunlandInfo: 48,
-                new_noSunlandAnswerPer: 236,
-                new_noSunlandAnswerNum: 5374,
-                all_answerNum: 104099,
-                all_answerPer: 1704,
-                all_sunlandAnswerNum: 77862,
-                all_noSunlandAnswerNum: 26237,
-                all_sunlandAnswerPer: 1085,
-                all_noSunlandAnswerPer: 619
-            }],
+            list: [],
             total: null,
             pageObj: {
                 current: 1,
-                pageSize: 7
+                pageSize: 10
             },
-            dateArr: []
+            dateArr: [],
+            userNum: 0,
+            switchTab: 1
         }
 
-        this.columns = [
+        this.newColumns = [
             {
                 title: "日期",
                 dataIndex: "currTime",
@@ -57,20 +37,29 @@ export default class Dailydata extends Component {
                         title: '进入',
                         dataIndex: "new_getIn"
                     }, {
-                        title: '新手题目',
-                        dataIndex: "new_answer"
+                        title: '点击开始',
+                        dataIndex: "new_click_star_btn"
                     }, {
-                        title: '微信授权',
-                        dataIndex: "new_info"
+                        title: '答第一关',
+                        dataIndex: "new_first_answer"
                     }, {
                         title: '手机号',
                         dataIndex: "new_phone"
+                    }, {
+                        title: '新手题目',
+                        dataIndex: "new_answer"
                     }, {
                         title: '答题人数',
                         dataIndex: "new_answerPer"
                     }, {
                         title: '答题数',
                         dataIndex: "new_answerNum"
+                    }, {
+                        title: '人均答题',
+                        dataIndex: "new_averageAnswer",
+                        render: (c, a) => {
+                            return <span style={{ color: 'red' }}>{(a.new_answerNum / a.new_answerPer).toFixed(0)}</span>
+                        }
                     }]
                 }, {
                     title: '付费用户',
@@ -86,6 +75,12 @@ export default class Dailydata extends Component {
                     }, {
                         title: '答题数',
                         dataIndex: "new_sunlandAnswerNum"
+                    }, {
+                        title: '人均答题',
+                        dataIndex: "new_sunlandAverageAnswer",
+                        render: (c, a) => {
+                            return <span style={{ color: 'red' }}>{(a.new_sunlandAnswerNum / a.new_sunlandAnswerPer).toFixed(0)}</span>
+                        }
                     }]
                 }, {
                     title: '非付费用户',
@@ -101,36 +96,48 @@ export default class Dailydata extends Component {
                     }, {
                         title: '答题数',
                         dataIndex: "new_noSunlandAnswerNum"
+                    }, {
+                        title: '人均答题',
+                        dataIndex: "new_noSunlandAverageAnswer",
+                        render: (c, a) => {
+                            return <span style={{ color: 'red' }}>{(a.new_noSunlandAnswerNum / a.new_noSunlandAnswerPer).toFixed(0)}</span>
+                        }
                     }]
                 }]
-            },
+            }
+        ]
+        this.oldColumns = [
             {
+                title: "日期",
+                dataIndex: "currTime",
+                fixed: 'left'
+            }, {
                 title: "老用户相关",
                 dataIndex: "nickname",
                 children: [{
                     title: "老总用户",
                     children: [{
                         title: '进入',
-                        dataIndex: "date"
-                    }, {
-                        title: '微信授权',
-                        dataIndex: "date"
+                        dataIndex: "all_getIn",
+                        render: (c, a) => {
+                            return c - a.new_getIn
+                        }
                     }, {
                         title: '答题人数',
                         dataIndex: "all_answerPer"
                     }, {
                         title: '答题数',
                         dataIndex: "all_answerNum"
+                    }, {
+                        title: '人均答题',
+                        dataIndex: "all_AverageAnswer",
+                        render: (c, a) => {
+                            return <span style={{ color: 'red' }}>{(a.all_answerNum / a.all_answerPer).toFixed(0)}</span>
+                        }
                     }]
                 }, {
                     title: '付费用户',
                     children: [{
-                        title: '手机号',
-                        dataIndex: "date"
-                    }, {
-                        title: '微信授权',
-                        dataIndex: "date"
-                    }, {
                         title: '答题人数',
                         dataIndex: "all_sunlandAnswerPer",
                         render: (c, a) => {
@@ -142,16 +149,16 @@ export default class Dailydata extends Component {
                         render: (c, a) => {
                             return c - a.new_sunlandAnswerNum
                         }
+                    }, {
+                        title: '人均答题',
+                        dataIndex: "all_sunlandAverageAnswerNum",
+                        render: (c, a) => {
+                            return <span style={{ color: 'red' }}>{((a.all_sunlandAnswerNum - a.new_sunlandAnswerNum) / (a.all_sunlandAnswerPer - a.new_sunlandAnswerPer)).toFixed(0)}</span>
+                        }
                     }]
                 }, {
                     title: '非付费用户',
                     children: [{
-                        title: '手机号',
-                        dataIndex: "date"
-                    }, {
-                        title: '微信授权',
-                        dataIndex: "date"
-                    }, {
                         title: '答题人数',
                         dataIndex: "all_noSunlandAnswerPer",
                         render: (c, a) => {
@@ -163,10 +170,15 @@ export default class Dailydata extends Component {
                         render: (c, a) => {
                             return c - a.new_noSunlandAnswerNum
                         }
+                    }, {
+                        title: '人均答题',
+                        dataIndex: "all_noSunlandAverageAnswerNum",
+                        render: (c, a) => {
+                            return <span style={{ color: 'red' }}>{((a.all_noSunlandAnswerNum - a.new_noSunlandAnswerNum) / (a.all_noSunlandAnswerPer - a.new_noSunlandAnswerPer)).toFixed(0)}</span>
+                        }
                     }]
                 }]
-            },
-        ]
+            }]
     }
 
     componentWillMount() {
@@ -176,8 +188,8 @@ export default class Dailydata extends Component {
 
     componentDidMount() {
         const { dailyDataList } = this.props;
-        const { userList } = dailyDataList;
-        userList ? console.log('已有数据') : this.onSerach();
+        const { list } = dailyDataList;
+        list ? console.log('已有数据') : this.onSerach();
     }
 
     shouldComponentUpdate(prevProps, nextState) {
@@ -185,34 +197,30 @@ export default class Dailydata extends Component {
         if (nextState.pageObj.current !== this.state.pageObj.current) {
             return true;
         }
-        if (nextState.userList != []) {
+        if (nextState.list != []) {
             return true;
         }
     }
 
     onSerach = (queryObj = {}) => {
         const _that = this;
-
-        // for (let i = 0; i < dateArr.length; i++) {
-        // 普通请求
-        // postObj(QUERYDAILYDATA, { 'date': '2018-09-26' }).then((res) => {
+        // postObj(QUERYDAILYDATA).then((res) => {
         //     console.log(JSON.parse(res));
         //     const userList = JSON.parse(res);
         //     _that.setState({
-        //         userList
+        //         userList,
+        //         userNum: userList.length
         //     })
         // })
-        // }
-
 
         // 连入了 redux-saga 为保存当前页面内容
-        // let { pageObj } = this.state;
-        // const { dispatch } = this.props;
-        // pageObj = Object.assign({}, queryObj, pageObj);
-        // dispatch({
-        //     type: DEFAULT_DAILYDATA_QUERY_RESULT,
-        //     pageObj
-        // })
+        let { pageObj } = this.state;
+        const { dispatch } = this.props;
+        pageObj = Object.assign({}, queryObj, pageObj);
+        dispatch({
+            type: DEFAULT_DAILYDATA_QUERY_RESULT,
+            pageObj
+        })
     }
 
     onChange = (e) => {
@@ -290,24 +298,34 @@ export default class Dailydata extends Component {
         console.log(dateArr);
     }
 
+    onSwitchTab = (e) => {
+        this.setState({
+            switchTab: e
+        })
+    }
+
     render() {
         const { dailyDataList } = this.props;
-        let { userNum, pageObj } = dailyDataList;
-        const { userList } = this.state;
-        console.log(userList)
+        console.log(dailyDataList)
+        let { pageObj, list, length } = dailyDataList;
+        let { switchTab } = this.state;
         return (
             <div style={{ position: 'relative' }} className={className['daily_data']}>
+                <div className={className['btn_wrap']}>
+                    <Button onClick={() => this.onSwitchTab(1)} type={switchTab == 1 ? "primary" : "default"}>新用户</Button>
+                    <Button onClick={() => this.onSwitchTab(2)} type={switchTab == 2 ? "primary" : "default"}>老用户</Button>
+                </div>
                 {/* <Icon type="form" style={style} /> */}
                 <Table
-                    columns={this.columns}
-                    dataSource={userList}
-                    loading={userList && userList.length > 0 ? false : true} pagination={false}
+                    columns={switchTab == 1 ? this.newColumns : this.oldColumns}
+                    dataSource={list}
+                    loading={list && list.length > 0 ? false : true} pagination={false}
                     size="middle"
                     scroll={{ x: true }}
                     bordered
                 />
                 {
-                    userNum > 0 ? <Pagination total={userNum} current={pageObj.current} pageSize={pageObj.pageSize} onChange={this.onChange} style={{ marginBottom: '20px' }} /> : ""
+                    length > 0 ? <Pagination total={length} current={pageObj.current} pageSize={pageObj.pageSize} onChange={this.onChange} style={{ marginBottom: '20px' }} /> : ""
                 }
             </div>
         )

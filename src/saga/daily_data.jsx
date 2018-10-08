@@ -4,16 +4,16 @@
 import { takeEvery, isCancelError } from 'redux-saga';
 import { take, call, put } from 'redux-saga/effects';
 import { postObj } from './../api/promise_ajax';
-import { QUERYTABLEDATA } from './../api/interface';
+import { QUERYDAILYDATA } from './../api/interface';
 import { DEFAULT_DAILYDATA_QUERY_SUCCESS, DEFAULT_DAILYDATA_QUERY_FAIL, DEFAULT_DAILYDATA_QUERY_RESULT } from './../constants/index';
 
 
 function* queryDailyList(action) {
     // console.log(action);
     try {
-        let data = yield call(postObj, QUERYTABLEDATA, action.pageObj);
+        let data = yield call(postObj, QUERYDAILYDATA, action.pageObj);
         data = Object.assign({}, JSON.parse(data), action);
-        console.log(data);
+
         yield put({
             type: DEFAULT_DAILYDATA_QUERY_SUCCESS,
             data: data

@@ -6,7 +6,7 @@
     
     .btn_wrap {
         margin-bottom: 20px;
-        :global(.ant-btn):nth-of-type(2){
+        :global(.ant-btn):not(:nth-of-type(1)){
             margin-left: 20px;
         }
     }
@@ -17,6 +17,6 @@
         // 不起效果
     }
     :global(.ant-table-tbody>tr){
-        height: 60px;
+        height: 30px;
     }
 }

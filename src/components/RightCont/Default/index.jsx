@@ -27,7 +27,7 @@ export default class Default extends Component {
     componentDidMount() {
         const { dispatch } = this.props;
         const that = this;
-        getForm('http://127.0.0.1/sunland_data/default.json?132').then((res) => {
+        getForm('http://172.16.50.41/sunland_data/default.json?134').then((res) => {
             let data = JSON.parse(res).data;
             let arr = []
             for (let i in data) {

@@ -38,15 +38,15 @@ export default class Dailydata extends Component {
                         dataIndex: "new_getIn"
                     }, {
                         title: '点击开始',
-                        dataIndex: "new_click_star_btn"
-                    }, {
-                        title: '答第一关',
-                        dataIndex: "new_first_answer"
+                        dataIndex: "new_click_star_btn",
+                        render: (c, a) => {
+                            return c ? c : '--'
+                        }
                     }, {
                         title: '手机号',
                         dataIndex: "new_phone"
                     }, {
-                        title: '新手题目',
+                        title: '新手学历',
                         dataIndex: "new_answer"
                     }, {
                         title: '答题人数',
@@ -60,6 +60,12 @@ export default class Dailydata extends Component {
                         render: (c, a) => {
                             return <span style={{ color: 'red' }}>{(a.new_answerNum / a.new_answerPer).toFixed(0)}</span>
                         }
+                    }, {
+                        title: '微信授权',
+                        dataIndex: "new_info"
+                    }, {
+                        title: '添加专业',
+                        dataIndex: "new_add_education"
                     }]
                 }, {
                     title: '付费用户',
@@ -124,10 +130,16 @@ export default class Dailydata extends Component {
                         }
                     }, {
                         title: '答题人数',
-                        dataIndex: "all_answerPer"
+                        dataIndex: "all_answerPer",
+                        render: (c, a) => {
+                            return c - a.new_answerPer
+                        }
                     }, {
                         title: '答题数',
-                        dataIndex: "all_answerNum"
+                        dataIndex: "all_answerNum",
+                        render: (c, a) => {
+                            return c - a.new_answerNum
+                        }
                     }, {
                         title: '人均答题',
                         dataIndex: "all_AverageAnswer",
@@ -138,6 +150,12 @@ export default class Dailydata extends Component {
                 }, {
                     title: '付费用户',
                     children: [{
+                        title: '进入',
+                        dataIndex: "oldSunlands_getIn",
+                        render: (c, a) => {
+                            return c ? c : '--';
+                        }
+                    }, {
                         title: '答题人数',
                         dataIndex: "all_sunlandAnswerPer",
                         render: (c, a) => {
@@ -159,6 +177,12 @@ export default class Dailydata extends Component {
                 }, {
                     title: '非付费用户',
                     children: [{
+                        title: '进入',
+                        dataIndex: "oldNoSunlands_getIn",
+                        render: (c, a) => {
+                            return c ? c : '--';
+                        }
+                    }, {
                         title: '答题人数',
                         dataIndex: "all_noSunlandAnswerPer",
                         render: (c, a) => {
@@ -179,6 +203,86 @@ export default class Dailydata extends Component {
                     }]
                 }]
             }]
+
+        this.allColumns = [
+            {
+                title: "日期",
+                dataIndex: "currTime",
+                fixed: 'left'
+            }, {
+                title: "打开",
+                dataIndex: "all_getIn",
+            }, {
+                title: "答题数",
+                dataIndex: "all_answerNum",
+            }, {
+                title: "答题人数",
+                dataIndex: "all_answerPer",
+            }, {
+                title: "人均答题数",
+                dataIndex: "all_averageAnswerNum",
+                render: (c, a) => {
+                    return <span style={{ color: 'red' }}>{(a.all_answerNum / a.all_answerPer).toFixed(0)}</span>
+                }
+            }, {
+                title: "答题人数/打开",
+                dataIndex: "all_AnswerPer_open",
+                render: (c, a) => {
+                    return <span style={{ color: 'red' }}>{(a.all_answerPer * 100 / a.all_getIn).toFixed(2)}%</span>
+                }
+            }
+        ]
+
+        this.newAverageColumns = [
+            {
+                title: "日期",
+                dataIndex: "currTime",
+                fixed: 'left'
+            }, {
+                title: "点击开始/打开",
+                dataIndex: "new_click_star_btn/open",
+                render: (c, a) => {
+                    return <span>{(a.new_click_star_btn * 100 / a.new_getIn).toFixed(2)}%</span>
+                }
+            }, {
+                title: "手机号/打开",
+                dataIndex: "new_phone/open",
+                render: (c, a) => {
+                    return <span>{(a.new_phone * 100 / a.new_getIn).toFixed(2)}%</span>
+                }
+            }, {
+                title: "答新手学历/打开",
+                dataIndex: "new_answer/open",
+                render: (c, a) => {
+                    return <span>{(a.new_answer * 100 / a.new_getIn).toFixed(2)}%</span>
+                }
+            }, {
+                title: "答题人数/打开",
+                dataIndex: "new_answerPer/open",
+                render: (c, a) => {
+                    return <span>{(a.new_answerPer * 100 / a.new_getIn).toFixed(2)}%</span>
+                }
+            }, {
+                title: "微信/打开",
+                dataIndex: "new_info/open",
+                render: (c, a) => {
+                    return <span>{(a.new_info * 100 / a.new_getIn).toFixed(2)}%</span>
+                }
+            }, {
+                title: "添加专业/打开",
+                dataIndex: "new_add_education/open",
+                render: (c, a) => {
+                    return <span>{(a.new_add_education * 100 / a.new_getIn).toFixed(2)}%</span>
+                }
+            }
+        ]
+        // {
+        //     title: "答第一关/打开",
+        //     dataIndex: "new_first_answer/open",
+        //     render: (c, a) => {
+        //         return <span>{(a.new_first_answer*100 / a.new_getIn).toFixed(2)}%</span>
+        //     }
+        // }, 
     }
 
     componentWillMount() {
@@ -312,12 +416,15 @@ export default class Dailydata extends Component {
         return (
             <div style={{ position: 'relative' }} className={className['daily_data']}>
                 <div className={className['btn_wrap']}>
-                    <Button onClick={() => this.onSwitchTab(1)} type={switchTab == 1 ? "primary" : "default"}>新用户</Button>
-                    <Button onClick={() => this.onSwitchTab(2)} type={switchTab == 2 ? "primary" : "default"}>老用户</Button>
+                    <Button onClick={() => this.onSwitchTab(1)} type={switchTab == 1 ? "primary" : "default"}>总用户</Button>
+                    <Button onClick={() => this.onSwitchTab(2)} type={switchTab == 2 ? "primary" : "default"}>新用户</Button>
+                    <Button onClick={() => this.onSwitchTab(3)} type={switchTab == 3 ? "primary" : "default"}>新统计</Button>
+                    <Button onClick={() => this.onSwitchTab(4)} type={switchTab == 4 ? "primary" : "default"}>老用户</Button>
+
                 </div>
                 {/* <Icon type="form" style={style} /> */}
                 <Table
-                    columns={switchTab == 1 ? this.newColumns : this.oldColumns}
+                    columns={switchTab == 1 ? this.allColumns : switchTab == 2 ? this.newColumns : switchTab == 3 ? this.newAverageColumns : this.oldColumns}
                     dataSource={list}
                     loading={list && list.length > 0 ? false : true} pagination={false}
                     size="middle"

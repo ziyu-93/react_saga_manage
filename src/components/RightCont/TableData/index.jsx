@@ -139,7 +139,7 @@ export default class TableData extends Component {
         return (
             <div style={{ position: 'relative' }}>
                 {/* <Icon type="form" style={style} /> */}
-                <Table columns={this.columns} dataSource={userList} loading={userList && userList.length > 0 ? false : true} pagination={false} />
+                <Table columns={this.columns} dataSource={userList} loading={userList && userList.length > 0 ? false : true} pagination={false} scroll={{ x: true }} />
                 {
                     userNum > 0 ? <Pagination total={userNum} current={pageObj.current} pageSize={pageObj.pageSize} onChange={this.onChange} style={{ marginBottom: '20px' }} /> : ""
                 }

@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import className from './index.less';
-import userImg from './../../resources/images/userImg.png';
-import logout from './../../resources/images/logout.png';
-import logo from './../../resources/images/header_logo.png';
+import userImg from './../../images/userImg.png';
+import logout from './../../images/logout.png';
+import logo from './../../images/header_logo.png';
 import { Link, Redirect } from 'react-router-dom';
 import { Modal } from 'antd';
 

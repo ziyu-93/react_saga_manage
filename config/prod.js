@@ -14,7 +14,7 @@ const plugins = defaultConfig.getDefaultPlugins().concat([
         'process.env.NODE_ENV': '"production"'
     }),
     new HtmlWebpackPlugin({
-        template: 'src/index.html',
+        template: 'src/index_dist.html',
         filename: '../index.html',
     }),
     new ExtractTextPlugin('[name].css'),
@@ -91,7 +91,7 @@ const config = Object.assign({}, baseConfig, {
     plugins,
     module: modules,
     resolve: {
-        extensions: ['.js', '.jsx'] // 自动解决扩展名
+        extensions: ['.js', '.jsx']           // 自动解决扩展名
     }
 })
 

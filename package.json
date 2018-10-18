@@ -8,6 +8,7 @@
     "antd": "^3.8.0",
     "babel-polyfill": "^6.26.0",
     "classnames": "^2.2.6",
+    "copyfiles": "^2.1.0",
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
     "html-webpack-plugin": "^3.2.0",
     "minimist": "^1.2.0",
@@ -50,6 +51,7 @@
     "clean": "rimraf dist/*",
     "start": "node server.js --env=deve --color --watch",
     "dll": "webpack --env=dll --color",
+    "prebuild": "node copy.js",
     "build": "webpack --env=prod"
   },
   "keywords": [

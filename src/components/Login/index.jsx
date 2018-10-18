@@ -3,7 +3,7 @@ import { Button, Input, Form, Icon, Checkbox } from 'antd';
 import className from './index.less';
 import { sysSuccess, sysError, sysWarning } from './../../api/sysNotification';
 import { LOGIN_RESULT } from './../../constants/index';
-import bg from './../../resources/images/image_33.jpg';
+import bg from './../../images/image_33.jpg';
 import { Redirect } from 'react-router-dom';
 
 export default class Header extends Component {

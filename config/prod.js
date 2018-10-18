@@ -14,7 +14,7 @@ const plugins = defaultConfig.getDefaultPlugins().concat([
         'process.env.NODE_ENV': '"production"'
     }),
     new HtmlWebpackPlugin({
-        template: 'src/index_dist.html',
+        template: 'src/index.html',
         filename: '../index.html',
     }),
     new ExtractTextPlugin('[name].css'),
@@ -89,7 +89,10 @@ const config = Object.assign({}, baseConfig, {
     cache: false,
     devtool: 'cheap-module-source-map',
     plugins,
-    module: modules
+    module: modules,
+    resolve: {
+        extensions: ['.js', '.jsx'] // 自动解决扩展名
+    }
 })
 
 module.exports = config

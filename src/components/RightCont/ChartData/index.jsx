@@ -115,11 +115,12 @@ export default class ChartData extends Component {
             'padding': '20px',
             'background': 'white',
             'boxSizing': 'border-box',
-            'WebKitboxSizing': 'border-box'
+            'WebKitboxSizing': 'border-box',
+            'display':'inline-block'
         }
 
         return (
-            <div>
+            <div className={classname['echarts_item']}>
                 <ReactEcharts
                     option={this.getOption1()}
                     style={style}

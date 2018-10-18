@@ -20,7 +20,7 @@ const Cont = () => {
             <Switch>
                 <Route exact path="/zkwz_clientSystem" component={Default} />
                 <Route path="/zkwz_clientSystem/userTable" component={TableData} />
-                <Route path="/zkwz_clientSystem/chart" component={ChartData} />
+                {/* <Route path="/zkwz_clientSystem/chart" component={ChartData} /> */}
                 <Route path="/zkwz_clientSystem/daily_data" component={Dailydata} />
                 <Redirect from="*" to="/zkwz_clientSystem" component={Default} />
             </Switch>

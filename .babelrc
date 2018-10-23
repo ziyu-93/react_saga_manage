@@ -18,6 +18,11 @@
         "transform-object-rest-spread",
         "transform-class-properties",
         "transform-runtime",
-        "transform-object-assign"
+        "transform-object-assign",
+        ["import", {
+            "libraryName": "antd",
+            "libraryDirectory": "es",
+            "style": true
+        }]
     ]
 }

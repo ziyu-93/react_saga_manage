@@ -1,22 +1,16 @@
-
 const path = require('path');
 const webpack = require('webpack');
 const uglifyjsWebpackPlugin = require('uglifyjs-webpack-plugin');
-const vendor = ['react', 'react-dom', 'react-router', 'react-redux', 'redux', 'redux-saga', 'reselect', 'antd', 'classnames', 'redux-actions'];
-
+const vendor = ['react', 'react-dom', 'react-router', 'react-redux', 'redux', 'redux-saga', 'redux-actions', 'reselect', 'classnames'];
+// const vendor = ['react', 'react-dom', 'react-router', 'react-redux', 'redux', 'redux-saga', 'redux-actions', 'reselect', 'classnames', 'antd'];
 const dllConfig = Object.assign({}, {
-    mode: 'production',             // webpack 4+ 需要写 mode : production or development  
-                                    // 也需要下载一个插件 webpack-cli  or  webpack-command
-    // optimization: {              // 这部分的，是想整合重复代码，提取重复，打入新包
-    //     splitChunks: {           
-    //         chunks: 'all'
-    //     }
-    // },
+    mode: 'production', // webpack 4+ 需要写 mode : production or development 
     resolve: {
         extensions: ['.js', '.jsx']
     },
     entry: {
         vendor
+        // reduxObj
     },
     output: {
         path: path.join(__dirname, '/../dist/assets/'),
@@ -33,6 +27,25 @@ const dllConfig = Object.assign({}, {
             path: path.join(__dirname, "/../dist/assets/", "[name]-manifest.json"),
             name: '[name]_[chunkhash]',
             context: path.join(__dirname, "/../dist/"),
+        }),
+        new webpack.optimize.SplitChunksPlugin({
+            chunks: "async",
+            minSize: 30000,
+            minChunks: 1,
+            maxAsyncRequests: 5,
+            maxInitialRequests: 3,
+            name: true,
+            cacheGroups: {
+                vendors: {
+                    test: /[\\/]node_modules[\\/]/,
+                    priority: -10
+                },
+                commons: {
+                    name: "commons",
+                    chunks: "initial",
+                    minChunks: 2
+                }
+            }
         })
     ]
 })

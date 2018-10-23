@@ -1,4 +1,4 @@
-import 'antd/dist/antd.less';
+// import 'antd/dist/antd.less';
 import './less/antd_changeStyle.less';
 
 // import 'react-hot-loader/patch';
@@ -9,7 +9,7 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import { syncHistoryWithStore, routerReducer as routing } from 'react-router-redux';
-import { BrowserRouter } from 'react-router-dom';
+import { HashRouter } from 'react-router-dom';
 import saga from './saga/index';
 
 // import leftMenuReducer from './reducers/leftMenu';
@@ -42,11 +42,11 @@ sagaMiddleware[0].run(saga);
 // const history = syncHistoryWithStore(BrowserRouter, store);
 const ele = document.getElementById("app");
 ReactDom.render(
-    <BrowserRouter >
+    <HashRouter >
         <Provider store={store}>
             <ContRouter />
         </Provider>
-    </BrowserRouter>
+    </HashRouter>
     , ele
 )
 

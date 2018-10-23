@@ -137,11 +137,11 @@ export default class TableData extends Component {
             fontSize: '32px'
         }
         return (
-            <div style={{ position: 'relative' }}>
+            <div style={{ position: 'relative' }} className={classname['table_data']}>
                 {/* <Icon type="form" style={style} /> */}
                 <Table columns={this.columns} dataSource={userList} loading={userList && userList.length > 0 ? false : true} pagination={false} scroll={{ x: true }} />
                 {
-                    userNum > 0 ? <Pagination total={userNum} current={pageObj.current} pageSize={pageObj.pageSize} onChange={this.onChange} style={{ marginBottom: '20px' }} /> : ""
+                    userNum > 0 ? <Pagination total={userNum} current={pageObj.current} pageSize={pageObj.pageSize} onChange={this.onChange} style={{ marginBottom: '20px', marginTop: '20px' }} /> : ""
                 }
             </div>
         )

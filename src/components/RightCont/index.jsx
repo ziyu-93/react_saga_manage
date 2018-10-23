@@ -10,9 +10,16 @@ export default class RightCont extends Component {
     render() {
         const { rightCont } = this.props;
         const { leftMenuReducer } = rightCont;
+        const style = {
+            padding: '40px 60px',
+            WebkitBoxSizing: 'border-box',
+            boxSizing: 'border-box',
+            height: '100%',
+            width: '100%'
+        }
         return (
             <section className={classname[leftMenuReducer ? 'rightContFull' : 'rightCont']}>
-                <div style={{ margin: '40px 60px', WebkitBoxSizing: 'border-box', boxSizing: 'border-box' }}>
+                <div style={style}>
                     {
                         this.props.children
                     }

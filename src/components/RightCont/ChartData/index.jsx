@@ -1,9 +1,12 @@
 import React, { Component } from "react";
 import classname from './index.less';
-// import echarts from 'echarts/lib/echarts.js';
-import ReactEcharts from 'echarts-for-react';
-import { Table } from 'antd';
-
+import { Modal, Button } from 'antd';
+import moment from 'moment';
+import chartLine from './../../../images/line-simple.png';
+import chartPie from './../../../images/pie-simple.png';
+import EchersLine from './echers_line';
+import EchersPie from './echers_pie';
+import EchersAverageAnswer from './echers_average_answer';
 export default class ChartData extends Component {
 
     constructor(...arg) {
@@ -11,7 +14,8 @@ export default class ChartData extends Component {
         super(...arg);
 
         this.state = {
-            cnt: 0
+            visible: false,
+            target: null
         }
 
         this.columns = [
@@ -22,126 +26,63 @@ export default class ChartData extends Component {
         ]
     }
 
-    getOption1 = () => ({
-        title: {
-            text: '自考王者访问来源',
-            subtext: '完善中',
-            x: 'center'
-        },
-        tooltip: {
-            trigger: 'item',
-            formatter: "{a} <br/>{b} : {c} ({d}%)"
-        },
-        legend: {
-            orient: 'vertical',
-            left: 'left',
-            data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
-        },
-        series: [
-            {
-                name: '访问来源',
-                type: 'pie',
-                radius: '55%',
-                center: ['50%', '60%'],
-                data: [
-                    { value: 335, name: '直接访问' },
-                    { value: 310, name: '邮件营销' },
-                    { value: 234, name: '联盟广告' },
-                    { value: 135, name: '视频广告' },
-                    { value: 1548, name: '搜索引擎' }
-                ],
-                itemStyle: {
-                    emphasis: {
-                        shadowBlur: 10,
-                        shadowOffsetX: 0,
-                        shadowColor: 'rgba(0, 0, 0, 0.5)'
-                    }
-                }
-            }
-        ]
-    });
-
-    getOption2 = () => ({
-        title: {
-            text: '自考王者一周内新用户',
-            subtext: '完善中',
-            x: 'center'
-        },
-        xAxis: {
-            type: 'category',
-            data: ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日']
-        },
-        yAxis: {
-            type: 'value'
-        },
-        series: [{
-            data: [820, 932, 901, 934, 1290, 1330, 1320],
-            type: 'line'
-        }]
-    });
-
-    onChartClick = (param, echarts) => {
-        console.log(param, echarts);
-        // alert('chart click');
+    onTarget = (e) => {
         this.setState({
-            cnt: this.state.cnt + 1,
+            target: e,
+            visible: true
         })
-    };
-
-    onChartReadyCallback = () => {
-        console.log('echarts is ready');
     }
 
-    onChartClick = (param, echarts) => {
-        console.log(param, echarts);
-        alert('chart click');
+    onHandleOk = () => {
         this.setState({
-            cnt: this.state.cnt + 1,
+            visible: false
         })
-    };
+    }
 
-    onChartLegendselectchanged = (param, echart) => {
-        console.log(param, echart);
-        alert('chart legendselectchanged');
-    };
+    handleCancel = () => {
+        this.setState({
+            visible: false
+        })
+    }
     render() {
-        
-        let onEvents = {
-            'click': this.onChartClick,
-            'legendselectchanged': this.onChartLegendselectchanged
-        };
-        const style = {
-            'width': '50%',
-            'padding': '20px',
-            'background': 'white',
-            'boxSizing': 'border-box',
-            'WebKitboxSizing': 'border-box',
-            'display':'inline-block'
-        }
-
+        const { visible, target } = this.state;
+        const id = target ? target.id : "";
         return (
-            <div className={classname['echarts_item']}>
-                <ReactEcharts
-                    option={this.getOption1()}
-                    style={style}
-                    notMerge={true}
-                    lazyUpdate={true}
-                    theme={"theme_name"}
-                    onChartReady={this.onChartReadyCallback}
-                    onEvents={onEvents}
-                    opts={{ renderer: 'svg' }}
-                />
-                <ReactEcharts
-                    option={this.getOption2()}
-                    style={Object.assign({}, style, { marginTop: '30px', fontSize: '12px' })}
-                    notMerge={true}
-                    lazyUpdate={true}
-                    theme={"theme_name"}
-                    onChartReady={this.onChartReadyCallback}
-                    onEvents={onEvents}
-                    opts={{ renderer: 'svg' }}
-                />
-            </div>
+            <div className={classname['chart_wrap']}>
+                {
+                    this.props.chartList.map((i, k) => {
+                        return <div className={classname['chart_item']} key={k} onClick={() => this.onTarget(i)}>
+                            <a>
+                                <p><a>{i.chartType}</a></p>
+                                <img src={i.src} alt="" />
+                            </a>
+                        </div>
+                    })
+                }
+                <Modal
+                    visible={visible}
+                    title={target ? target.chartType : '自考王者数据'}
+                    onOk={this.handleOk}
+                    onCancel={this.handleCancel}
+                    width='70%'
+                    footer={[
+                        <Button key="submit" type="primary" onClick={this.handleCancel}>
+                            确定
+                        </Button>
+                    ]}>
+                    {
+                        id == 1 ? <EchersPie /> : id == 2 ? <EchersLine /> : <EchersAverageAnswer />
+                    }
+                </Modal>
+            </div >
         )
     }
+}
+
+ChartData.defaultProps = {
+    chartList: [
+        { 'id': 1, chartType: '渠道新增 - 圆饼图', 'src': chartPie },
+        { 'id': 2, chartType: '打开答题 - 折线图', 'src': chartLine },
+        { 'id': 3, chartType: '人均答题 - 折线图', 'src': chartLine },
+    ]
 }

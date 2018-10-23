@@ -20,7 +20,7 @@ const Cont = () => {
             <Switch>
                 <Route exact path="/zkwz_clientSystem" component={Default} />
                 <Route path="/zkwz_clientSystem/userTable" component={TableData} />
-                {/* <Route path="/zkwz_clientSystem/chart" component={ChartData} /> */}
+                <Route path="/zkwz_clientSystem/chart" component={ChartData} />
                 <Route path="/zkwz_clientSystem/daily_data" component={Dailydata} />
                 <Redirect from="*" to="/zkwz_clientSystem" component={Default} />
             </Switch>
@@ -40,9 +40,9 @@ const Cont = () => {
 const ContRouter = () => {
     return <section className={className['app']}>
         <Switch>
-            <Route exact path="/zkwz_login" component={Login} ></Route>
+            <Route exact path="/" component={Login} ></Route>
             <Route path="/zkwz_clientSystem" component={Cont} ></Route>
-            <Redirect from="*" to="/zkwz_login" component={Login} />
+            <Redirect from="*" to="/" component={Login} />
         </Switch>
     </section>
 }

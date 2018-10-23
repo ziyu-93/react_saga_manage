@@ -52,7 +52,7 @@ LeftMenu.defaultProps = {
     menuList: [
         { id: 0, text: '版本更新', hash: "/zkwz_clientSystem", icon: "desktop" },
         { id: 1, text: '用户列表', hash: "/zkwz_clientSystem/userTable", icon: "table" },
-        // { id: 2, text: '图形统计', hash: "/zkwz_clientSystem/chart", icon: "area-chart" },
+        { id: 2, text: '图形统计', hash: "/zkwz_clientSystem/chart", icon: "area-chart" },
         { id: 3, text: '用户答题', hash: "/zkwz_clientSystem/daily_data", icon: "table" }
     ]
 }

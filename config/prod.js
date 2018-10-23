@@ -26,7 +26,8 @@ const plugins = defaultConfig.getDefaultPlugins().concat([
     new webpack.DllReferencePlugin({
         context: path.join(__dirname, "/../dist/"),
         manifest: require("../dist/assets/vendor-manifest.json")
-    })
+    }),
+    new webpack.optimize.ModuleConcatenationPlugin()
 ])
 
 const modules = defaultConfig.getDefaultModules()
@@ -91,7 +92,7 @@ const config = Object.assign({}, baseConfig, {
     plugins,
     module: modules,
     resolve: {
-        extensions: ['.js', '.jsx']           // 自动解决扩展名
+        extensions: ['.js', '.jsx'] // 自动解决扩展名
     }
 })
 

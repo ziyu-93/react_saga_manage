@@ -1,6 +1,7 @@
 const path = require("path");
 const args = require('minimist')(process.argv.slice(2)); // minimist 一种解析引擎
 const argsArr = ['dll', 'deve', 'prod'];
+
 let env = '';
 // if (args._.length > 0 && args._.indexOf('start') !== -1) {
 //     env = 'test';

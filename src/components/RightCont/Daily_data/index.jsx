@@ -432,7 +432,7 @@ export default class Dailydata extends Component {
                     bordered
                 />
                 {
-                    length > 0 ? <Pagination total={length} current={pageObj.current} pageSize={pageObj.pageSize} onChange={this.onChange} style={{ marginBottom: '20px' }} /> : ""
+                    length > 0 ? <Pagination total={length} current={pageObj.current} pageSize={pageObj.pageSize} onChange={this.onChange} style={{ marginBottom: '20px', marginTop: '20px' }} /> : ""
                 }
             </div>
         )
